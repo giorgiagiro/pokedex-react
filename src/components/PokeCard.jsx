@@ -18,6 +18,19 @@ export default function PokeCard(props) {
 
     const { name, height, abilities, stats, types, moves, spirites } = data || {}
 
+
+    const imgList = Object.keys(sprites || {}).filter((val) => {
+        if (!sprites[val]) {
+            return false
+        }
+
+        if (["versions", "other"].includes(val)) {  
+            return false
+        }
+
+
+    })
+
     useEffect(() => {
         console.log(selectedPokemon)
 
@@ -102,15 +115,41 @@ export default function PokeCard(props) {
             </div>
 
             <img className='default-img' src={'/pokemon/' + getFullPokedexNumber(selectedPokemon) + '.png'} alt={`${name}-large-img`} />
-           {/* <div className='img-container'>
+            <div className='img-container'>
                 {imgList.map((spriteUrl, spriteIndex) => {
                     const imgUrl = sprites[spriteUrl]
                     return (
                         <img key={spriteIndex} src={imgUrl} alt={`${name}-img-${spriteUrl}`} />
                     )
                 })}
-            </div>*/}
+            </div>
+            <h3>Stats</h3>
+            <div className='stats-card'>
+                {stats.map((statObj, statIndex) => {
 
+                    const {stat, base_stat} = statObj
+
+                    return (
+                        <div key={statIndex} className="stat-item">
+                            <p>{stat?.name.replaceAll('-', ' ')}</p>
+                            <h4>{base_stat}</h4>
+                        </div>
+                    )
+                })}
+            </div>
+
+            <h3>Moves</h3>
+            <div className='pokemon-moves-grid'>
+                {moves.map((moveObj, moveIndex) => {
+                    return (
+                        <button className='button-card pokemon-move' key={moveIndex} onClick={() => {
+                            fetchMoveData(moveObj?.move?.name, moveObj?.move?.url)
+                        }}>
+                            <p>{moveObj?.move?.name.replaceAll('-', ' ')}</p>
+                        </button>
+                    )
+                })}
+            </div>    
         </div>
     )
 }
