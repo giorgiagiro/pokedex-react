@@ -1,7 +1,13 @@
-import React from 'react'
+import React from "react"
 
-export default function Header() {
-  return (
-    <div></div>
-  )
+export default function Header(props) {
+    const { handleToggleMenu } = props
+    return (
+        <header>
+            <button onClick={handleToggleMenu} className="open-nav-button">
+                <i className="fa-solid fa-bars"></i>
+            </button>
+            <h1 className="text-gradient">Pokédex</h1>
+        </header>
+    )
 }
