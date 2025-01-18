@@ -28,10 +28,11 @@ export default function PokeCard(props) {
         return true
     })
 
-    async function fetchMoveData(moveName, moveUrl) {
+    async function fetchMoveData(move, moveUrl) {
 
         if (loadingSkill || !localStorage || !moveUrl) { return }
 
+        // check if move is in cache
         let c = {}
         if (localStorage.getItem('pokemon-moves')) {
             c = JSON.parse(localStorage.getItem('pokemon-moves'))
@@ -85,6 +86,7 @@ export default function PokeCard(props) {
         if (selectedPokemon in cache) {
             // read from cache
             setData(cache[selectedPokemon])
+            console.log("Found pokemon in cache")
             return
         }
 
@@ -100,7 +102,7 @@ export default function PokeCard(props) {
                 const res = await fetch(finalUrl)
                 const pokemonData = await res.json()
                 setData(pokemonData)
-                console.log(pokemonData)
+                console.log("Fetched pokemon data from API", pokemonData)
 
                 cache[selectedPokemon] = pokemonData
                 localStorage.setItem("pokedex", JSON.stringify(cache))
