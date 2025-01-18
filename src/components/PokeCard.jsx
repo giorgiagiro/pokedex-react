@@ -18,17 +18,14 @@ export default function PokeCard(props) {
 
     const { name, height, abilities, stats, types, moves, sprites } = data || {}
 
-
     const imgList = Object.keys(sprites || {}).filter((val) => {
         if (!sprites[val]) {
             return false
         }
-
-        if (["versions", "other"].includes(val)) {  
+        if (["versions", "other"].includes(val)) {
             return false
         }
-
-
+        return true
     })
 
     useEffect(() => {
@@ -87,51 +84,52 @@ export default function PokeCard(props) {
 
     return (
         <div className="poke-card">
-            {/*<Modal
-                handleCloseModal={() => {
-                    setSkill(null)
-                }}
-            >
-                <div>
-                    <h6>Name</h6>
-                    <h2 className="skill-name">{skill.name.replaceAll("-", " ")}</h2>
-                </div>
-                <div>
-                    <h6>Description</h6>
-                    <p>{skill.description}</p>
-                </div>
-            </Modal>*/}
+            {skill && (
+                <Modal
+                    handleCloseModal={() => {
+                        setSkill(null)
+                    }}
+                >
+                    <div>
+                        <h6>Name</h6>
+                        <h2 className="skill-name">{skill.name.replaceAll("-", " ")}</h2>
+                    </div>
+                    <div>
+                        <h6>Description</h6>
+                        <p>{skill.description}</p>
+                    </div>
+                </Modal>
+            )}
 
             <div>
                 <h4>#{getFullPokedexNumber(selectedPokemon)}</h4>
                 <h2>{name}</h2>
             </div>
-            <div className='type-container'>
+            <div className="type-container">
                 {types.map((typeObj, typeIndex) => {
-                    return (
-                        <TypeCard key={typeIndex} type={typeObj?.type?.name} />
-                    )
+                    return <TypeCard key={typeIndex} type={typeObj?.type?.name} />
                 })}
             </div>
 
-            <img className='default-img' src={'/pokemon/' + getFullPokedexNumber(selectedPokemon) + '.png'} alt={`${name}-large-img`} />
-            <div className='img-container'>
+            <img
+                className="default-img"
+                src={"/pokemon/" + getFullPokedexNumber(selectedPokemon) + ".png"}
+                alt={`${name}-large-img`}
+            />
+            <div className="img-container">
                 {imgList.map((spriteUrl, spriteIndex) => {
                     const imgUrl = sprites[spriteUrl]
-                    return (
-                        <img key={spriteIndex} src={imgUrl} alt={`${name}-img-${spriteUrl}`} />
-                    )
+                    return <img key={spriteIndex} src={imgUrl} alt={`${name}-img-${spriteUrl}`} />
                 })}
             </div>
             <h3>Stats</h3>
-            <div className='stats-card'>
+            <div className="stats-card">
                 {stats.map((statObj, statIndex) => {
-
-                    const {stat, base_stat} = statObj
+                    const { stat, base_stat } = statObj
 
                     return (
                         <div key={statIndex} className="stat-item">
-                            <p>{stat?.name.replaceAll('-', ' ')}</p>
+                            <p>{stat?.name.replaceAll("-", " ")}</p>
                             <h4>{base_stat}</h4>
                         </div>
                     )
@@ -139,17 +137,21 @@ export default function PokeCard(props) {
             </div>
 
             <h3>Moves</h3>
-            <div className='pokemon-moves-grid'>
+            <div className="pokemon-moves-grid">
                 {moves.map((moveObj, moveIndex) => {
                     return (
-                        <button className='button-card pokemon-move' key={moveIndex} onClick={() => {
-                            fetchMoveData(moveObj?.move?.name, moveObj?.move?.url)
-                        }}>
-                            <p>{moveObj?.move?.name.replaceAll('-', ' ')}</p>
+                        <button
+                            className="button-card pokemon-move"
+                            key={moveIndex}
+                            onClick={() => {
+                                fetchMoveData(moveObj?.move?.name, moveObj?.move?.url)
+                            }}
+                        >
+                            <p>{moveObj?.move?.name.replaceAll("-", " ")}</p>
                         </button>
                     )
                 })}
-            </div>    
+            </div>
         </div>
     )
 }
